@@ -1,9 +1,8 @@
 package cl.vivimardones.p2ef_vivianamardones
 
-import RegistroActivity
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,35 +12,34 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainActivity : AppCompatActivity() {
     private lateinit var rvRegistros: RecyclerView
     private lateinit var btnAdd: FloatingActionButton
+    private lateinit var adapter: RegistroAdapter
+    private val registros = mutableListOf<Registro>()
 
+    private val registerResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val tipo = result.data?.getStringExtra("tipo")
+            val registro = result.data?.getStringExtra("registro")
+            val fecha = result.data?.getStringExtra("fecha")
+            if (tipo != null && registro != null && fecha != null) {
+                registros.add(Registro(tipo, registro, fecha))
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Configurar el RecyclerView
         rvRegistros = findViewById(R.id.rvRegistros)
         btnAdd = findViewById(R.id.btnAdd)
 
-        //Configuramos el Recicler View
         rvRegistros.layoutManager = LinearLayoutManager(this)
+        adapter = RegistroAdapter(registros)
+        rvRegistros.adapter = adapter
 
-        // creamos y establecemos el adaptador
-        val adapter = RegistroAdapter(getData())
-
-        // Configurar el botón de añadir
         btnAdd.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java)
-            startActivity(intent)
+            registerResult.launch(intent)
         }
-
-        }
-    private fun getData(): List<Registro> {
-        // Aquí deberías obtener los datos de alguna fuente como una base de datos
-        return listOf(
-            Registro("Agua", "10500", "2024-01-10"),
-            Registro("Luz", "3200", "2024-01-11"),
-            Registro("Gas", "80", "2024-01-13")
-        )
     }
 }

@@ -25,6 +25,7 @@ class RegistroAdapter(private val registros: List<Registro>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val registro = registros[position]
+
         holder.tvTipoMedidor.text = registro.tipo
         holder.tvRegistroMedidor.text = registro.registro
         holder.tvFechaRegistro.text = registro.fecha

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">P2EF_VivianaMardones</string>
+    <string name="etMedidor">Medidor</string>
+    <string name="tvTitulo">Registro Medidor</string>
+    <string name="etFecha">Fecha</string>
+    <string name="tvTipoMedidor">Medidor de:</string>
+    <string name="rbAgua">Agua</string>
+    <string name="rbLuz">Luz</string>
+    <string name="btnRegistrar">Registrar Medición</string>
+    <string name="rbGas">Gas</string>
+    <string name="btnAdd">Añadir nuevo Registro</string>
+</resources>
